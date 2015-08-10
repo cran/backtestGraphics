@@ -1,0 +1,402 @@
+\documentclass[a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{RJournal}
+\usepackage{amsmath,amssymb,array}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{Sweave}
+\usepackage[parfill]{parskip}
+\usepackage[round]{natbib}
+
+%\VignetteEngine{Sweave}
+%\VignetteIndexEntry{backtestGraphics}
+
+\begin{document}
+\SweaveOpts{concordance=FALSE}
+%% do not edit, for illustration only
+\sectionhead{Contributed research article}
+\volume{XX}
+\volnumber{YY}
+\year{20ZZ}
+\month{AAAA}
+
+\begin{article}
+
+\title{Backtest Graphics}
+
+\author{by David Kane, Ziqi Lu, Fan Zhang, Miller Zijie Zhu}
+
+\maketitle
+
+\abstract{
+The \pkg{backtestGraphics} package does not run backtests but instead creates
+an interactive graphical interface to present backtest results. The
+user can visualize
+backtest results for different financial instruments, such as equities, futures,
+and credit default swaps. The left panel of the interface displays
+summary performance
+statistics and the right panel shows interactive plots of profit and
+loss (P\&L),
+net market value (NMV) and gross market value (GMV). Because a single
+backtest may contain
+multiple strategies and overlapping portfolios, the
+\pkg{backtestGraphics} package also
+allows the user to look at results for different strategies, substrategies, and
+overlapping portfolios.
+}
+
+\section{Introduction}
+Backtesting is the process of testing trading strategies on prior time
+horizons to measure the effectiveness of the strategy. It helps
+investors understand and optimize their trading strategies
+[\cite{backtest}]. For more on backtesting, \emph{Quantitative Value}
+[\cite{quantitative}] is a good introductory book. Notice that
+\pkg{backtestGraphics} does not run backtests, but presents the
+backtest results graphically.
+
+\noindent
+The package contains three data frames with backtest information on
+commodity futures, equity, and credit default swaps (CDS): \code{commodity},
+\code{equity}, and \code{credit}. These data frames are all valid to
+pass into the \code{backtestGraphics} function.
+
+\noindent
+The Shiny interface in \pkg{backtestGraphics} allows the user to look
+at her backtest results [\cite{shiny}]. Summary statistics, including
+average gross market value (GMV), number of instruments, cumulative
+and annualized profit and loss (P\&L), sharpe ratio, best and worst
+months, are displayed in the ``Summary" tab in the sidebar panel. More
+detailed information, including the top three drawdowns and three best
+and worst performers, are shown in the ``Detail" tab. Interactive
+plots of cumulative P\&L, daily P\&L, net market value (NMV) and GMV
+are displayed in the main panel. The user can easily zoom in to look
+at any specific time period on the plots.
+
+\noindent
+Backtests vary in complexity. A simple backtest employs a single strategy in
+a single portfolio while a more complex backtest uses multiple strategies and
+substrategies. The user can also create overlapping
+portfolios for different (sub)strategies at different time periods.
+The \pkg{backtestGraphics} package has two dropdown menus for different
+strategies and portfolios, which allow the user to subset her backtest
+results accordingly.
+
+\section{Data}
+
+The package contains three data frames which are backtest results for
+commodity futures, equities and CDS, respectively: \code{commodity},
+\code{equity} and \code{credit}.
+
+Start with \code{equity}:
+
+<<echo = FALSE>>=
+library(backtestGraphics)
+library(dplyr)
+
+## use the following dplyr code to show a more interesting section of
+## the data frame
+
+equity %>% filter(name %in% unique(equity$name)[1:3],
+                  date %in% as.Date(c("2005-05-02", "2005-05-03",
+                                      "2005-05-04"))) %>%
+      arrange(date, name)
+@
+
+
+\begin{itemize}
+\item{\code{name} column contains the name for each stock.}
+\item{\code{date} column contains the trading date. The column should
+be \code{Date} type.}
+\item{\code{sector} column contains the sector of each stock.}
+\item{\code{nmv} column contains NMV of each stock at the beginning of
+each trading day. Make sure all values are converted into the same
+currency.}
+\item{\code{pnl} column contains P\&L of each stock. The P\&L can be
+raw P\&L or adjusted P\&L after transaction fees. Make sure all values
+are converted into the same currency.}
+\end{itemize}
+
+\noindent
+Now look at \code{commodity}:
+
+<<echo = FALSE>>=
+
+## use the following dplyr code to show a more interesting section of
+## the data frame
+
+(commodity %>% filter(id   %in% c("CO", "FC", "W"),
+                      date %in% as.Date(c("2003-02-03", "2003-02-07"))) %>%
+       arrange(id, name))[c(1,6,15,16,17),]
+@
+
+Columns, such as \code{name}, \code{date}, \code{sector}, \code{nmv},
+and \code{pnl}, have the same meaning as the ones in \code{equity}.
+\code{id} column contains ID information for different commodities.
+\code{contract} column contains the number of contracts of each commodity
+at the beginning of each trading day; this column is optional. \code{gmv} is
+the GMV at the start of each trading day; this column is also optional.
+
+\noindent
+Notice that this data frame is more complex: \code{strategy}
+column contains different backtest strategies, and \code{portfolio} column shows
+different portfolios under each strategy. If there is a finer division
+of strategies, the data frame can also contain a \code{substrategy}
+column. \code{backtestGraphics} function will subset the input data frame
+according to different selections in dropdown menus. These columns are optional.
+
+\noindent
+Finally, look at \code{credit}:
+
+<<echo = FALSE>>=
+credit %>% filter(name %in% unique(credit$name)[1:3],
+                  date %in% unique(credit$date)[1:3]) %>%
+      arrange(date, name)
+@
+
+\noindent
+Most of the columns are the same as those in \code{equity} and
+\code{commodity}. Notice that the \code{strategy} column here is used
+to denote backtest results for different trading frequencies. One
+important note is that users must provide all backtest observations
+for each instrument, even when the position on the instrument is held
+and unchanged. This is because \code{backtestGraphics} uses the time
+gap between each observation to determine the trading frequency and
+calculate annualized statistics.
+
+
+\section{Use \code{backtestGraphics}}
+
+To use \code{backtestGraphics}, the user is required to pass in a data
+frame with information on date, ID/name, NMV and P\&L. Optional
+information can also be passed into \code{backtestGraphics}, such as
+both instrument name and ID, sector, GMV, number of contracts,
+strategy, substrategy and portfolio number. We will explain in
+``Interface" section how to calculate summary statistics and generate
+plots.
+
+\noindent
+The three data frames in the package have the same column
+names as the default of \code{backtestGraphics} function. To look at
+backtestGraphics interface for \code{commodity} data, type the
+following command, and click on the ``Visualize" button. Shiny will
+generate the interface in Figure 1.
+
+\begin{example}
+library(backtestGraphics)
+backtestGraphics(x = commodity)
+\end{example}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = \textwidth, height = 2.5in]{img/overallscreen.png}
+\caption{\code{backtestGraphics} interface. This interface contains
+three dropdown menus at the top-left. The user can click the ``Visualize" button
+to look at summary statistics at the bottom left and interactive plots
+on the right. The user can also switch between graphs with radio buttons at the
+bottom of the plots.
+}
+\end{figure}
+
+\subsection{Dropdown Menu}
+The interface has three dropdown menus for strategies, portfolios and
+instruments. The user can look at backtest results for a combination
+of strategy,
+portfolio, and instrument. If the data frame does not have the
+strategy column or
+the portfolio column, the two dropdown menus will be fixed to
+``Strategy Summary" or ``Portfolio Summary". If the user selects a
+combination that is not available in the data frame, the interface will
+give an error message and ask the user to select a new combination.
+
+\noindent
+Figure 2 is a screenshot of the interface's dropdown menu.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = \textwidth, height = 3in]{img/dropdown.png}
+\caption{Dropdown menu. The user can look at backtest results for a
+combination of strategies, portfolios and instruments by selecting
+different choices in the dropdown menus. If the user selects a
+combination that is not available , the interface will give a clear
+error message and ask the user to select a new combination.}
+\end{figure}
+
+\subsection{``Summary" Tab and ``Detail" Tab}
+
+The interface has two tabs on the left: ``Summary" tab and ``Detail"
+tab. ``Summary" tab shows summary statistics of the user-specified
+data, while ``Detail" tab gives comparison across different
+instruments and different time periods. This information is calculated
+from the input data frame every time the user changes her combination
+of strategy, portfolio and instrument. Note that if the user is
+looking at data for individual instruments or instrument summary, the
+best/worst three performers are always selected from the entire
+portfolio and should remain the same.
+
+\subsubsection{``Summary" Tab}
+Figure 3 is a screenshot of the ``Summary" tab.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = 3in, height = 4in]{img/summary.png}
+\caption{``Summary" tab with commodity data. After the user clicks on
+the ``Visualize" button, the function slices the data frame and
+calculates the summary statistics for the specific data subset. These
+are the main performance statistics.}
+\end{figure}
+
+\begin{itemize}
+\item{Start and End date : The backtest period.}
+\item{Allocated Capital : The amount of capital allocated to the portfolio.
+The function uses this number to calculate return on allocated
+capital. If the user does not specify allocated capital, this entry
+will be \code{NULL} and \code{backtestGraphics} will use biggest GMV
+to calculate return on allocated capital.}
+\item{Average GMV : Average of GMV over the backtest period. GMV is
+calculated by taking the absolute values of NMV of each instrument.}
+\item{Number of Instruments : The number of different instruments in
+the data frame or the user-specified subset of the data frame.}
+\item{Cumulative P\&L : Sum of all P\&L over the backtest period.}
+\item{Annualized P\&L : Average P\&L times an annualization factor.
+The function can observe the date gaps between observations and
+determine the trading frequency. The assumed annualization factor of
+daily trading is $\sqrt{252}$. For other trading frequency, the
+assumed annualization factor is $\sqrt{\frac{365}{date \ gap}}$.}
+\item{Annualized P\&L volatility : The standard deviation of all
+annualized P\&L's.}
+\item{Annualzied Return : Annualized average return on allocated
+capital. If the user specifies the allocated capital amount, the
+functon will divide P\&L by the allocated capital to calculate average
+return rates. If not, the function will divide P\&L by the biggest GMV
+in the data. The function then multiplies average return by the
+annualization factor.}
+\item{Sharpe Ratio : A measure of risk-adjusted return. The function
+divides the mean P\&L by the standard deviation of P\&L to calculate
+sharpe ratio. We assume $\text{risk-free rate} = 0$.}
+\item{Best Month and Worst Month : The month with the highest P\&L and
+the month with the lowest P\&L}
+\end{itemize}
+
+\subsubsection{``Detail" Tab}
+Figure 4 is a screenshot of the ``Detail" tab.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = 2.5in, height = 3.5in]{img/detail.png}
+\caption{Detail tab with commodity data. This tab contains information
+about the best and worst performers, as well as the biggest
+drawdowns.}
+\end{figure}
+
+\begin{itemize}
+\item{Top three drawdowns : The three biggest declines in P\&L from
+peak to trough. The table contains the start and end dates of the
+drawdowns as well as the actual values of these drawdowns.}
+\item{Best and worst three performers : The best and worst three
+instruments with three highest
+and three lowest cumulative P\&L's. If the user is looking at the
+subset of data about an individual instrument or instrument summary,
+the function will display the best and worst three performers across
+all instruments. If the user is looking at data about a specific
+sector, the function will instead display the best and worst three
+performers in the specified sector.}
+\end{itemize}
+
+\subsection{Plots}
+
+The interface displays interactive plots for cumulative and
+point-in-time P\&L, NMV, GMV and number of contracts. Radio buttons at
+the bottom allow the user to quickly switch between graphs. The
+cumulative P\&L plot is a filled line chart, and all others are bar
+charts.
+
+\noindent
+Figure 5 is a screenshot of the plots.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width = 4in, height = 3in]{img/plots.png}
+\caption{Plots with \code{commodity} data. The plot of P\&L is at the
+top and the plot of market values is at the bottom. Green bars represent
+profit and red bars represent loss. The user can zoom in on the plots by
+either selecting the corresponding region with mouse or changing the time
+slider bar.}
+\end{figure}
+
+\noindent
+The plots are interactive using the \pkg{dygraphs} package
+[\cite{dygraphs}]. The user can zoom in to look at any specific time
+period on the plots. She can either select and drag the corresponding
+region with mouse, or change the time slider bar beneath the plots.
+The user can go back to the initial scale by double clicking the plot.
+Color of the plots is based on the sign of point-in-time P\&L. Green
+bars represent profit and red bars represent loss. If the cursor is
+hovering above a specific bar, the legends of the plot will give
+specific values of the date and the response variable of that bar.
+Note that the data is automatically rounded. For example, a P\&L of
+``2,856,000" will be presented as ``2.86M".
+
+\noindent
+Compared to summary statistics, interactive plots are more intuitive
+because the user can directly visualize the performance of different
+instruments across adjustable time period. By decomposing the data
+frame into different sectors and instruments, the user can closely
+look at profitability of different strategies as well as that of
+different sectors at different time periods.
+
+\section{Conclusion}
+
+The \pkg{backtestGraphics} package creates a simple interface to visualize
+backtest results of different financial instruments.
+\code{backtestGraphics} is the main function that wraps all
+the calculations and presents results in a graphical interface.
+The function requires some necessary columns: ID/name, date,
+P\&L, NMV. The user can pass in optional columns to add complication,
+such as sector, strategy, substrategy, portfolio number, etc.
+
+\noindent
+Inside the package, we provide three default data frames. The user can
+type the code provided above to test the package.
+
+\noindent
+The interface efficiently displays information about backtest results.
+The user may look at either the summary statistics or the interactive plots.
+The user can use the dropdown menus to select different
+subsets of the backtest data frame. Such selection allows the user to carefully
+analyze the strengths and weaknesses of different trading strategies, and the
+interactive plots allow the user to further dive into the historical
+time period of the backtest.
+
+\pagebreak
+
+\section{Authors}
+
+\address{David Kane\\
+Managing Director \\
+Hutchin Hill Capital\\
+101 Federal Street, Boston, USA\\}
+\email{dave.kane@gmail.com}
+
+\address{Ziqi Lu\\
+Economics and Mathematics\\
+Williams College \\
+Williamstown, MA, USA\\}
+\email{ziqi.lu@williams.edu}
+
+\address{Fan Zhang\\
+Economics and Statistics \\
+Williams College\\
+Williamstown, MA, USA\\}
+\email{fan.zhang@williams.edu}
+
+\address{Miller Zijie Zhu\\
+Computer Science and Economics \\
+Williams College\\
+Williamstown, MA, USA\\}
+\email{zijie.miller.zhu@gmail.com}
+
+\bibliography{backtestGraphics}
+
+\end{article}
+\end{document}
