@@ -12,12 +12,20 @@ test_that("slice_data function", {
   result.6 <- backtestGraphics:::slice_data(x, input.6, NULL)
   result.7 <- backtestGraphics:::slice_data(x, input.7, NULL)
   
-  expect_equal(result.1, truth.1, label = "Failed the test for summarizing data across all strategies, portfolios and instruments.")
-  expect_equal(result.2, truth.2, label = "Failed the test for selecting a specific sector.")
-  expect_equal(result.3, truth.3, label = "Failed the test for selecting a specific instrument.")
-  expect_equal(result.4, truth.4, label = "Failed the test for selecting a specific strategy.")
-  expect_equal(result.5, truth.5, label = "Failed the test for selecting a specific substrategy.")
-  expect_equal(result.6, truth.6, label = "Failed the test for selecting a specific portfolio.")
-  expect_equal(result.7, truth.7, label = "Failed the test for selecing a single instrument in a specific portfolio and under a specific strategy.")
-  
+  expect_equal(result.1, truth.1, tolerance = 1,
+               label = "Failed the test for summarizing data across all strategies, 
+                        portfolios and instruments.")
+  expect_equal(result.2, truth.2, tolerance = 1,
+               label = "Failed the test for selecting a specific sector.")
+  expect_equal(result.3, truth.3, tolerance = 1,
+               label = "Failed the test for selecting a specific instrument.")
+  expect_equal(result.4, truth.4, tolerance = 1,
+               label = "Failed the test for selecting a specific strategy.")
+  expect_equal(result.5, truth.5, tolerance = 1,
+               label = "Failed the test for selecting a specific substrategy.")
+  expect_equal(result.6, truth.6, tolerance = 1,
+               label = "Failed the test for selecting a specific portfolio.")
+  expect_equal(result.7, truth.7, tolerance = 1,
+               label = "Failed the test for selecing a single instrument in a 
+               specific portfolio and under a specific strategy.")
 })

@@ -19,30 +19,31 @@ trading frequency. The default value of this variable is NULL, and in this
 case the function will automatically calculate the trading period.}
 
 \item{name.var}{is the column name of the instrument name column in the input
-data set, character type. The default value of this variable is "name". The user has to
-specify name.var if she passes in a data frame with a different column name for the
-instrument name. The input data set must contain either a name column or an ID column.}
+data set, character type. The default value of this variable is "name". The
+user has to specify name.var if she passes in a data frame with a different
+column name for the instrument name. The input data set must contain either
+a name column or an ID column.}
 
 \item{id.var}{is the column name of the instrument ID column, character type.
-The default value of this variable is "id". If the input data set labels the
-column of instrument ID's with some other column name, the user has to pass
-in the column name here. The input data set has to contain either a name
-column or an ID column.}
+The default value of this variable is "id". If the input data set labels
+the column of instrument ID's with some other column name, the user has to
+pass in the column name here. The input data set has to contain either a
+name column or an ID column.}
 
 \item{date.var}{is the column name of the date column, character type. The
-default value of this variable is "date". This column has to exist, and the
-column name has to be correct in order for the function to process the data
-set properly.}
+  default value of this variable is "date". This column has to exist, and the
+  column name has to be correct in order for the function to process the data
+  set properly.}
 
 \item{nmv.var}{is the column name of the "net market value" column, character
-type. The default value of this variable is "nmv". The input data set
-has to contain either a "net market value" column or a "number of contract"
+type. The default value of this variable is "nmv". The input data set has
+to contain either a "net market value" column or a "number of contract"
 column.}
 
 \item{gmv.var}{The column name of the "gross market value" column if exists,
-character type. The default value of this variable is "gmv". Such column will
-be automatically calculated from the "net market value" column if it does not
-exist.}
+character type. The default value of this variable is "gmv". Such column
+will be automatically calculated from the "net market value" column if it
+does not exist.}
 
 \item{pnl.var}{The column name of the profit-and-loss column, character type.
 The default value of this variable is "pnl". The data set has to contain
@@ -50,21 +51,22 @@ such column so that the function can function properly. If such column is
 missing, the function will return an error indicating the problem.}
 
 \item{contract.var}{The column name of the contract number column, character
-type. The default value of this variable is "contract". If such
-column is missing, the function will instead use net market value as the
-contract number for each day.}
+type. The default value of this variable is "contract". If such column is
+missing, the function will instead use net market value as the contract
+number for each day.}
 
 \item{capital.num}{The constant number of allocated capital for the whole
-portfolio, numeric type. The default value of such variable is NULL. The
-function will use the number of allocated capital to calculate return rates.
-If the allocated capital for the portfolio is not specified, the function
-will use each day's gross market value to calculate the return rate for each
-day.}
+  portfolio, numeric type. The default value of such variable is \code{NULL}.
+  The function will use the number of allocated capital to calculate return
+  rates. If the allocated capital for the portfolio is not specified, the
+  function will use each day's gross market value to calculate the return
+  rate for each day.}
 
-\item{sector.var}{is the column name of the sector column, character type. The
-default value of this variable is "sector". The sector column helps the user
-to group instruments into big groups according to industries. The function
-will still perform properly if the column name for sector is wrong.}
+\item{sector.var}{is the column name of the sector column, character type.
+The default value of this variable is "sector". The sector column helps the
+user to group instruments into big groups according to industries. The
+function will still perform properly if the column name for sector is
+wrong.}
 
 \item{strategy.var}{The column name of the strategy column, if any. Character
 type. The default value of this variable is "strategy". This column can be
@@ -75,42 +77,42 @@ Character type. The default value of this variable is "substrategy". This
 column can be missing from the input data set.}
 
 \item{portfolio.var}{The column name of the portfolio number column, if any.
-Character type. The default value of this variable is "portfolio". This
-column can be missing from the input data set.}
+  Character type. The default value of this variable is "portfolio". This
+  column can be missing from the input data set.}
 }
 \value{
 a Shiny interface. The interactive shiny interface displays P&L and
-cumulative P&L on one chart, and number of contracts, net market value and
-gross market value on the other chart. Some summary statistics about return and
-performances are displayed on the left sidebar as tables.
+  cumulative P&L on one chart, and number of contracts, net market value and
+  gross market value on the other chart. Some summary statistics about return
+  and performances are displayed on the left sidebar as tables.
 }
 \description{
 This function takes a data frame and returns an interactive interface for the
-backtest data. The interface contains drop-down menus for different strategies,
-portfolios and instruments/sectors. The user can slice her data set according
-to the strategies for selecting instruments or the portfolio numbers of her
-individual portfolios. The user can also look at a specific group of instruments
-according to the sector of instruments. These sectors will be in the same
-dropdown menu as instruments. The elements in each of the three dropdown
-menus are generated according to the input data set. The dropdown menus for
-strategies and portfolio numbers will only contain "Strategy Summary" or
-"Portfolio Summary" if there's no strategy or portfolio information available
-in the input data set.
+backtest data. The interface contains drop-down menus for different
+strategies, portfolios and instruments/sectors. The user can slice her data
+set according to the strategies for selecting instruments or the portfolio
+numbers of her individual portfolios. The user can also look at a specific
+group of instruments according to the sector of instruments. These sectors
+will be in the same dropdown menu as instruments. The elements in each of the
+three dropdown menus are generated according to the input data set. The
+dropdown menus for strategies and portfolio numbers will only contain
+"Strategy Summary" or "Portfolio Summary" if there's no strategy or portfolio
+information available in the input data set.
 }
 \details{
 The user can also slice the data set according to the division of the data
 set into main strategies, and the division of any main strategy into small
-substrategies. The "substrategy" column of the data set should indicate
-the division of main strategies, if there are any substrategies. Note that
-the structure of substrategies should conform to main strategies. That is,
-a single substrategy should be under only one main strategy.
+substrategies. The "substrategy" column of the data set should indicate the
+division of main strategies, if there are any substrategies. Note that the
+structure of substrategies should conform to main strategies. That is, a
+single substrategy should be under only one main strategy.
 
 Summary statistics are displayed in tables under the drop-down menu. The
 summary statistics contain data for the backtesting time horizon, profits,
-returns, volatility, market values, best/worst performers and biggest drawdowns.
-Different interactive plots for the cumulative P&L, daily P&L, Net Market
-Value (NMV), Gross Market Value (GMV) and number of contracts are shown in
-the right panel.
+returns, volatility, market values, best/worst performers and biggest
+drawdowns. Different interactive plots for the cumulative P&L, daily P&L, Net
+Market Value (NMV), Gross Market Value (GMV) and number of contracts are
+shown in the right panel.
 
 The \code{backtestGraphics} function takes in a data set as well as the names
 of essential columns in the data set, if these names are different from the
