@@ -1,4 +1,4 @@
-3f9731a39fbb26341fc8e4cc7c0994f4 *DESCRIPTION
+47687b4bc904892ab8b514b767b4b2d5 *DESCRIPTION
 4d845ddaeeab47f90ed03c7ff60dbc11 *NAMESPACE
 3e77f2db7cf72725571074b5b25d06dd *R/backtestGraphics-package.R
 4b8edf27d8646079af609217337697b1 *R/backtestGraphics.R
@@ -25,7 +25,7 @@ f4bfa62cfdecca996bf2d7a5bd90ac74 *data/datalist
 42da553acf7985d441dcf0e02cd2bb07 *data/equity.RData
 38d0ba5a436c211795680bed7e179e29 *inst/doc/backtestGraphics.R
 e47f287900b6ab964ed383e7f319b450 *inst/doc/backtestGraphics.Rnw
-0593dfcbe2f8ceb80a72f824e34a1cdb *inst/doc/backtestGraphics.pdf
+d4f57c55554c46e98adfecbc6a9f4f0d *inst/doc/backtestGraphics.pdf
 ae34c817d697d0cfe38ff4f0f08179d6 *man/backtestGraphics-package.Rd
 13e6a20ad1ab1ac72c999ad04e15abd9 *man/backtestGraphics.Rd
 442946273ad0c0c6a29b118e63ffd925 *man/best_worst_month.Rd
@@ -56,12 +56,8 @@ a934b6f2d2f06a6de359a68ca788caa3 *tests/testthat/test_cleanup_column.RData
 2f0e9bef488eae60e2e0a9794d9b9804 *tests/testthat/test_cumpnl_plot.RData
 3c72a1c15122bb9c4d2e1204182cc84f *tests/testthat/test_interactive_plot.R
 db20cf7026f9a161fa19a39d9febe720 *tests/testthat/test_interactive_plot.RData
-fb9fb6148c0e915320a5a5313c29d8c7 *tests/testthat/test_slice_data.R
-4dfedbec91489e2d43202b12c4d122d4 *tests/testthat/test_slice_data.RData
 97110b8db80cc5bba8a5b4c271726af0 *tests/testthat/test_stat_calculation.R
 7340ebf35c64b18270e34c49b5dfe31f *tests/testthat/test_stat_calculation.RData
-ce29dae9e9b2e6fc220a816716ac6e4c *tests/testthat/test_sum_data.R
-6b92a58c11573b3f7d331fb02f89270f *tests/testthat/test_sum_data.RData
 e263ce3533b71f4ff226b7177bba2440 *tests/testthat/test_trade_freq.R
 a4b12361e84f38ba1e52e8e2dec61ebc *tests/testthat/test_trade_freq.RData
 7aa63dc39a51d9e6e9c7f73e31b2c2fb *vignettes/RJournal.sty
