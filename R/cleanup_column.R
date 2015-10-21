@@ -79,7 +79,8 @@ cleanup_column <- function(x,
   
   if(pnl.var %in% colnames(x)){
     colnames(x)[which(colnames(x) == pnl.var)]  <- "pnl.temp"
-  } else {
+  } 
+  else {
     stop("Did not find P&L, or the column name for P&L is wrong")
   }
   

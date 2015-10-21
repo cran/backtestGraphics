@@ -1,5 +1,5 @@
 ### R code from vignette source 'backtestGraphics.Rnw'
-### Encoding: UTF-8
+### Encoding: ISO8859-1
 
 ###################################################
 ### code chunk number 1: backtestGraphics.Rnw:93-103

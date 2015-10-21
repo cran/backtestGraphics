@@ -11,8 +11,8 @@ Description: Creates an interactive graphics
              portfolio holdings are shown in the left panel, and interactive 
              plots of profit and loss (P\&L), net market value (NMV) and 
              gross market value (GMV) are displayed in the right panel. 
-Version: 0.1.5
-Date: 2015-08-13
+Version: 0.1.6
+Date: 2015-10-20
 Author: as.person(c(
                 "David Kane <dave.kane@gmail.com> [aut]",
                 "Ziqi Lu <ziqi.lu@williams.edu> [aut]",
@@ -26,6 +26,6 @@ Depends: R (>= 2.10)
 Imports: dygraphs, dplyr, scales, xts, shiny
 Suggests: testthat
 NeedsCompilation: no
-Packaged: 2015-08-13 13:01:32 UTC; zzhu
+Packaged: 2015-10-20 20:06:25 UTC; miller
 Repository: CRAN
-Date/Publication: 2015-08-13 20:14:19
+Date/Publication: 2015-10-21 10:01:42
