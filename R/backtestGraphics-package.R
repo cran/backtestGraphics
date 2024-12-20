@@ -36,5 +36,4 @@
 #' Type \code{?backtestGraphics} for more details.
 #' 
 #' @name backtestGraphics-package
-#' @docType package
-NULL
+"_PACKAGE"

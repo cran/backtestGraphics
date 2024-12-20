@@ -104,9 +104,7 @@
 #'   and performances are displayed on the left sidebar as tables.
 #'   
 #' @examples
-#' \dontrun{
-#' backtestGraphics(data = credit.bt)
-#' }
+#' if(interactive()) {backtestGraphics(credit)}
 #' 
 #' @importFrom xts xts
 #' @importFrom scales comma_format
@@ -157,6 +155,10 @@ backtestGraphics <- function(x,
                       substrategy.var = substrategy.var,
                       portfolio.var   = portfolio.var)
   
+  strategy_optGroups <- create_strategy_optGroups(x$strategy, x$substrategy)
+  
+  instrument_optGroups <- create_instrument_optGroups(x$sector, x$id)
+  
   shinyApp(
     
     ######################################################
@@ -185,7 +187,7 @@ backtestGraphics <- function(x,
         
         selectInput("strategy",
                     label    = "Strategies",
-                    choices  = c("Strategy Summary", unique(x$strategy), unique(x$substrategy)),
+                    choices  = c("Strategy Summary", strategy_optGroups),
                     selected = "Strategy Summary"),
         
         selectInput("portfolio",
@@ -198,7 +200,7 @@ backtestGraphics <- function(x,
         
         selectizeInput("instrument", 
                        label   = "Instruments",
-                       choices = c("Instrument Summary", unique(x$sector), unique(x$id)), 
+                       choices = c("Instrument Summary", instrument_optGroups), 
                        options = list(maxOptions = 50)                      
         ),
         
@@ -210,10 +212,13 @@ backtestGraphics <- function(x,
           ## user click this button this way Shiny won't eagerly evaluate when
           ## the user is still typing
           
+          ## Make clear to the user that they must click visualize before 
+          ## they see anything
+          helpText("Click Visualize to view results."),
+          
           column(4,
                  
                  ## Unless submitButton is pressed, shiny won't evaluate inputs
-                 
                  actionButton(inputId = "visualize", label = "Visualize!"),
                  
                  ## print additional blank row to place buttom in better position
@@ -329,7 +334,7 @@ backtestGraphics <- function(x,
         
         items <- c("Start Date", 
                    "End Date",
-                   "Allocated Capital",
+                   "Allocated Capital (AC)",
                    "Average GMV ($)",
                    "Number of Instruments",
                    "Cumulative P&L ($)",
@@ -365,7 +370,7 @@ backtestGraphics <- function(x,
         
         return(tab)
         
-      }, align = "rlr",
+      },
       include.colnames = FALSE,
       include.rownames = FALSE)
       
@@ -390,11 +395,11 @@ backtestGraphics <- function(x,
                        
                        tbl$pnl <- as.character(tbl$pnl)
                        for(i in 2:nrow(tbl)){
-                         tbl$pnl[i] <- comma_format(digit = 4)(as.numeric(tbl$pnl[i]))
+                         tbl$pnl[i] <- comma_format(digits = 4)(as.numeric(tbl$pnl[i]))
                        }
                        
                        return(tbl)
-                     }), align = "rrr",
+                     }),
         include.colnames = FALSE,
         include.rownames = FALSE)
       
@@ -415,11 +420,11 @@ backtestGraphics <- function(x,
                        
                        tbl$pnl <- as.character(tbl$pnl)
                        for(i in 2:nrow(tbl)){
-                         tbl$pnl[i] <- comma_format(digit = 4)(as.numeric(tbl$pnl[i]))
+                         tbl$pnl[i] <- comma_format(digits = 4)(as.numeric(tbl$pnl[i]))
                        }
                        
                        return(tbl)
-                     }), align = "rrr",
+                     }),
         include.colnames = FALSE,
         include.rownames = FALSE)
       
@@ -436,12 +441,12 @@ backtestGraphics <- function(x,
                        
                        tbl$pnl <- as.character(tbl$pnl)
                        for(i in 2:nrow(tbl)){
-                         tbl$pnl[i] <- comma_format(digit = 4)(as.numeric(tbl$pnl[i]))
+                         tbl$pnl[i] <- comma_format(digits = 4)(as.numeric(tbl$pnl[i]))
                        }
                        
                        colnames(tbl) <- c("Start Date","End Date", "P&L ($)")
                        return(tbl)
-                     }), align = "rrrr", 
+                     }), 
         include.colnames = FALSE,
         include.rownames = FALSE)
       

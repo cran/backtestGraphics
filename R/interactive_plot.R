@@ -116,7 +116,8 @@ interactive_plot <- function(x, type) {
   ## in the plot.
   
   p2 <- dygraph(graph_data,
-                main = title.var) %>% 
+                main = title.var,
+                group = "plots") %>% 
     dyLegend(labelsSeparateLines = TRUE,
              show = "onmouseover") %>%
     dyRangeSelector() %>%

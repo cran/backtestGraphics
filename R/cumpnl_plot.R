@@ -27,7 +27,7 @@ cumpnl_plot <- function(x) {
   ## the display of numbers in "dyOptions" so that 6,000,000 will be displayed
   ## as 6M.
   
-  dygraph(x, main = title.var) %>%
+  dygraph(x, main = title.var, group = "plots") %>%
     dySeries(label = "Cumulative P&L") %>%
     dyRangeSelector() %>%
     dyLegend(labelsSeparateLines = TRUE) %>%
