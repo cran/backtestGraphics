@@ -110,13 +110,13 @@ cleanup_column <- function(x,
   if(strategy.var %in% colnames(x)){
     colnames(x)[which(colnames(x) == strategy.var)] <- "strategy"
   } else {
-    x <- mutate(x, strategy = "")
+    x <- mutate(x, strategy = "Strategy 1")
   }
   
   if(substrategy.var %in% colnames(x)){
     colnames(x)[which(colnames(x) == substrategy.var)] <- "substrategy"
   } else {
-    x <- mutate(x, substrategy = "")
+    x <- mutate(x, substrategy = "Strategy 1.1")
   }
   
   ## If the input data frame does not contain instrument ID's, take instrument 

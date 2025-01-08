@@ -1,7 +1,7 @@
 ### R code from vignette source 'backtestGraphics.Rnw'
 
 ###################################################
-### code chunk number 1: backtestGraphics.Rnw:66-78
+### code chunk number 1: backtestGraphics.Rnw:126-138
 ###################################################
 library(backtestGraphics)
 library(dplyr)
@@ -18,7 +18,7 @@ print.data.frame(df, row.names = FALSE)
 
 
 ###################################################
-### code chunk number 2: backtestGraphics.Rnw:96-105
+### code chunk number 2: backtestGraphics.Rnw:156-165
 ###################################################
 
 ## use the following dplyr code to show a more interesting section of
@@ -32,7 +32,7 @@ print.data.frame(df, row.names = FALSE)
 
 
 ###################################################
-### code chunk number 3: backtestGraphics.Rnw:127-133
+### code chunk number 3: backtestGraphics.Rnw:187-193
 ###################################################
 df <- credit %>% filter(name %in% unique(credit$name)[1:3],
                   date %in% unique(credit$date)[1:3]) %>%
@@ -40,5 +40,12 @@ df <- credit %>% filter(name %in% unique(credit$name)[1:3],
 
 print.data.frame(df, row.names = FALSE)
 
+
+
+###################################################
+### code chunk number 4: backtestGraphics.Rnw:209-211 (eval = FALSE)
+###################################################
+## library(backtestGraphics)
+## backtestGraphics(x = commodity)
 
 

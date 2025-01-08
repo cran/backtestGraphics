@@ -9,10 +9,10 @@ Description: Creates an interactive graphics
              look at backtest graphics for different instruments, investment 
              strategies, and portfolios. Summary statistics of different 
              portfolio holdings are shown in the left panel, and interactive 
-             plots of profit and loss (P\&L), net market value (NMV) and 
+             plots of profit and loss (P&L), net market value (NMV) and 
              gross market value (GMV) are displayed in the right panel. 
-Version: 0.1.7
-Date: 2024-12-18
+Version: 0.1.8
+Date: 2025-01-02
 Authors@R: c(
     person(given = "Yanrong", 
            family = "Song", 
@@ -29,7 +29,7 @@ Authors@R: c(
     person(given = "Ziqi", 
            family = "Lu", 
            role = "aut", 
-           email = "ziqi.lu@williams.edu"),
+           email = "ziqilu@g.harvard.edu"),
     person(given = "Karan", 
            family = "Tibrewal", 
            role = "aut", 
@@ -42,12 +42,12 @@ Authors@R: c(
 License: GPL-3
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: dygraphs, dplyr, scales, xts, shiny
+Imports: dygraphs, dplyr, scales, xts, shiny, tibble
 Suggests: testthat
 NeedsCompilation: no
-Packaged: 2024-12-19 01:48:25 UTC; milz
+Packaged: 2025-01-08 05:07:15 UTC; milz
 Repository: CRAN
-Date/Publication: 2024-12-20 10:30:02 UTC
+Date/Publication: 2025-01-08 05:40:13 UTC
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 Author: Yanrong Song [aut, cre],

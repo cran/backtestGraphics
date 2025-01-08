@@ -45,7 +45,7 @@ sum_data <- function(x, sector.selected = NULL, capital.num = NULL){
                      pnl = sum(pnl, na.rm = TRUE),
                      contract = sum(contract, na.rm=TRUE),
                      gmv = sum(gmv, na.rm = TRUE))
-  x.sum <- tbl_df(x.sum) %>%
+  x.sum <- tibble::as_tibble(x.sum) %>%
     arrange(date) %>%
     filter(gmv != 0)
   

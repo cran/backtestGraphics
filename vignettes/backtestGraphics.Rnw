@@ -1,40 +1,89 @@
-\documentclass[a4paper]{report}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{RJournal}
-\usepackage{amsmath,amssymb,array}
-\usepackage{booktabs}
-\usepackage{float}
-\usepackage{Sweave}
-\usepackage[parfill]{parskip}
-\usepackage[round]{natbib}
+\documentclass[nojss]{jss}
+
+%% -- LaTeX packages and custom commands ---------------------------------------
+
+%% recommended packages
+\usepackage{orcidlink,thumbpdf,lmodern,framed,float,amsmath}
 
 %\VignetteEngine{utils::Sweave}
 %\VignetteIndexEntry{backtestGraphics}
 %\VignetteEncoding{UTF-8}
 
-\begin{document}
-\SweaveOpts{concordance=FALSE}
-%% do not edit, for illustration only
-\sectionhead{Contributed research article}
-\volume{XX}
-\volnumber{YY}
-\year{20ZZ}
-\month{AAAA}
+%% new custom commands
+\newcommand{\class}[1]{`\code{#1}'}
+\newcommand{\fct}[1]{\code{#1()}}
 
-\begin{article}
+%% For Sweave-based articles about R packages:
+%% need no \usepackage{Sweave}
+\SweaveOpts{engine=R, eps=FALSE, keep.source = TRUE}
 
-\title{Backtest Graphics}
 
-\author{by Yanrong Song, Zijie Zhu, David Kane, Ziqi Lu, Karan Tibrewal, Fan Zhang}
 
-\maketitle
+%% -- Article metainformation (author, title, ...) -----------------------------
 
-\abstract{
+%% - \author{} with primary affiliation (and optionally ORCID link)
+%% - \Plainauthor{} without affiliations
+%% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
+%% - \AND starts a new line, \And does not.
+\author{Yanrong Song\\Columbia University
+   \And Zijie Zhu\\Columbia University
+   \And David Kane\\Harvard University
+   \AND Ziqi Lu\\Harvard University
+   \And Karan Tibrewal\\Williams Collage
+   \And Fan Zhang\\Williams Collage}
+   
+\Plainauthor{Yanrong Song, Zijie Zhu, David Kane, Ziqi Lu, Karan Tibrewal, Fan Zhang}
+
+%% - \title{} in title case
+%% - \Plaintitle{} without LaTeX markup (if any)
+%% - \Shorttitle{} with LaTeX markup (if any), used as running title
+\title{Backtest Graphics in \proglang{R}}
+\Plaintitle{Backtest Graphics in R}
+\Shorttitle{Backtest Graphics in \proglang{R}}
+
+%% - \Abstract{} almost as usual
+\Abstract{
 The \pkg{backtestGraphics} package provides an interactive graphical interface to visualize backtests results for a variety of financial instruments (equities, futures, credit default swaps, et cetera).The \pkg{Shiny} interface, returned by the package, contains a sidebar panel with summary and detailed performance statistics, such as number of instruments, cumulative and annualized profit and loss, Sharpe ratio, top three drawdowns, and the three best and worst performers in the backtest. The main panel of interface houses interactive plots of profit and loss (P\&L), net market value (NMV) and gross market value (GMV). Lastly, the package also supports vizualization of multiple strategies, sub-strategies, and overlapping portfolios that may be present in a single backtest result. 
 }
 
-\section{Introduction}
+%% - \Keywords{} with LaTeX markup, at least one required
+%% - \Plainkeywords{} without LaTeX markup (if necessary)
+%% - Should be comma-separated and in sentence case.
+\Keywords{backtesting, vizualization, \proglang{R}}
+\Plainkeywords{backtesting, vizualization, R}
+
+%% - \Address{} of at least one author
+%% - May contain multiple affiliations for each author
+%%   (in extra lines, separated by \emph{and}\\).
+%% - May contain multiple authors for the same affiliation
+%%   (in the same first line, separated by comma).
+\Address{
+  Yanrong Song\\
+  Columbia University in the City of New York\\
+  Financial Engineering\\
+  URL: \url{https://github.com/yanrong-stacy-song}
+}
+
+
+
+\begin{document}
+
+
+%% -- Introduction -------------------------------------------------------------
+
+%% - In principle "as usual".
+%% - But should typically have some discussion of both _software_ and _methods_.
+%% - Use \proglang{}, \pkg{}, and \code{} markup throughout the manuscript.
+%% - If such markup is in (sub)section titles, a plain text version has to be
+%%   added as well.
+%% - All software mentioned should be properly \cite-d.
+%% - All abbreviations should be introduced.
+%% - Unless the expansions of abbreviations are proper names (like "Journal
+%%   of Statistical Software" above) they should be in sentence case (like
+%%   "generalized linear models" below).
+
+\section[Introduction]{Introduction} \label{sec:intro}
+
 
 Backtesting is the process of testing trading strategies on prior time horizons to measure the effectiveness of the given strategy. It helps investors understand and optimize their trading strategies [\cite{backtest}]. The \pkg{backtestGraphics} package provides an interactive \pkg{Shiny} interface to visualize backtest results for a variety of financial instruments (equities, futures, and credit defualt swaps, among others) [\cite{shiny}]. These visualizations enable users to employ their human perception to process a lot of backtest data quickly and approximately [\cite{bostock}].
 
@@ -53,10 +102,21 @@ The main panel of the \pkg{Shiny} interface houses interactive plots for cumulat
 Additionally, to accomodate for more complex backtests, \pkg{backtestGraphics} allows the user to subset seamlessly between overlapping portfolios, and multiple strategies and sub-strategies. For example, suppose the user splits his portfolio into two halves: the first half trades using the aforementioned trading strategy on a weekly basis, while the second uses the same strategy on a bi-weekly basis. Although these strategies overlap every other week, the user may want to explore how a particular strategy does in isolation. In order to do so, the user simply has to select the appropriate options from the dropdown menus provided in the side bar panel.  
 
 
-\section{Data}
+
+%% -- Manuscript ---------------------------------------------------------------
+
+%% - In principle "as usual" again.
+%% - When using equations (e.g., {equation}, {eqnarray}, {align}, etc.
+%%   avoid empty lines before and after the equation (which would signal a new
+%%   paragraph.
+%% - When describing longer chunks of code that are _not_ meant for execution
+%%   (e.g., a function synopsis or list of arguments), the environment {Code}
+%%   is recommended. Alternatively, a plain {verbatim} can also be used.
+%%   (For executed code see the next section.)
+
+\section{Data} \label{sec:data}
 
 The package comes with three sample data frames: \code{commodity}, \code{equity}, and \code{credit}. These are backtest results for commodity futures, equities, and credit default swaps (CDS), respectively. We use these data frames to demonstrate the capabilities of the backtestGraphics package. (Note: The user may also use her own data frame, as long as it adheres to the format specified in the documentation).
-
 
 \subsection{Equity}
 
@@ -136,39 +196,40 @@ print.data.frame(df, row.names = FALSE)
 \noindent
 Most of the columns here are the same as those in e\code{equity} and \code{commodity}. Notice that the \code{strategy} column here is used to denote backtest results for different trading frequencies. Towards this, the user must provide all backtest observations for each instrument, even when the position on the instrument is held and unchanged. This is because \pkg{backtestGraphics} uses the time gaps between each observation to determine the trading frequencies, and to calculate the annualized statistics. 
 
-\section{Using the \code{backtestGraphics} Interface}
+
+
+\section{Using the backtestGraphics Interface} \label{sec:backtestgraphics}
 
 In this section, we discuss the functionality of various components of the \pkg{Shiny} interface returned by the \pkg{backtestGraphics} function. To use backtestGraphics, the user is required to pass in a data frame with \code{date}, \code{ID/name}, \code{NMV} and \code{P\&L} columns to the \pkg{backtestGraphics} function. Additionally, the user can also pass in optional columns, such as \code{sector}, \code{GMV}, \code{contracts}, \code{strategy}, \code{substrategy}, and \code{portfolio}. 
 
 
-
 \noindent
-As an example, let us look at the interface for the \code{commodity} data frame. Type the following command, and click the ``Visualize" button on the Shiny interface returned by the function call. 
+As an example, let us look at the interface for the \code{commodity} data frame. Type the following command, and click the ``Visualize" button on the Shiny interface returned by the function call.
 
-
-\begin{example}
+<<eval = FALSE>>=
 library(backtestGraphics)
 backtestGraphics(x = commodity)
-\end{example}
+@
+
 
 \begin{figure}[H]
 \centering
 \includegraphics[width = \textwidth, height = 2.5in]{img/overallscreen.png}
-\caption{The \code{backtestGraphics} interface for the \code{commodity} data frame. The interface houses three dropdown menus on the top-left to toggle between Strategies, Portfolios, and Instruments. The user may click on the ``Vizualize" button to look at the summary statistics and the interactive plots. Finally, the user can also switch between plots with the radio buttons at the bottom of the plots. 
+\caption{The \code{backtestGraphics} interface for the \code{commodity} data frame. The interface houses three dropdown menus on the top-left to toggle between Strategies, Portfolios, and Instruments. The user may click on the ``Vizualize" button to look at the summary statistics and the interactive plots. Finally, the user can also switch between plots with the radio buttons at the bottom of the plots.
 }
 \end{figure}
-Now, let us individually examine the various components of the Shiny interface: 
+Now, let us individually examine the various components of the Shiny interface:
 
 
 \subsection{Dropdown Menus}
-The interface contains three dropdown menus on the top-left to toggle between different Strategies, Portfolios, and Instruments. By selecting different combinations of these menus, the user can visualize different subsets of strategies, portfolios and instruments. 
+The interface contains three dropdown menus on the top-left to toggle between different Strategies, Portfolios, and Instruments. By selecting different combinations of these menus, the user can visualize different subsets of strategies, portfolios and instruments.
 
 
 \noindent
-If the given data frame does not have a \code{strategy} column, or a \code{portfolio} column, the respective dropdown menus will be fixed to ``Strategy Summary" and ``Portfolio Summary". If the user selects a combination that is incompatible with the given data frame, the interface will generate an error message and prompt the user to select a different combination. 
+If the given data frame does not have a \code{strategy} column, or a \code{portfolio} column, the respective dropdown menus will be fixed to ``Strategy Summary" and ``Portfolio Summary". If the user selects a combination that is incompatible with the given data frame, the interface will generate an error message and prompt the user to select a different combination.
 
 \noindent
-Figure 2 provides a screenshot of the interface's dropdown menus. 
+Figure 2 provides a screenshot of the interface's dropdown menus.
 
 \begin{figure}[H]
 \centering
@@ -178,13 +239,13 @@ Figure 2 provides a screenshot of the interface's dropdown menus.
 
 \subsection{The ``Summary" Tab}
 
-The ``Summary" tab is present in the left-panel of the \code{Shiny} interface. It provides summary statistics for the backtest result. Figure 3 contains a screenshot of the ``Summary" tab for our commodity data frame, along with corresponding documentation.  
+The ``Summary" tab is present in the left-panel of the \code{Shiny} interface. It provides summary statistics for the backtest result. Figure 3 contains a screenshot of the ``Summary" tab for our commodity data frame, along with corresponding documentation.
 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width = 3in, height = 4in]{img/summary.png}
-\caption{The ``Summary" tab for the \code{commodity} data frame. On clicking the ``Visualize" button, the function slices the data frame according to inputs in the drop down menus to calculate summary statistics for the specified data subset. 
+\caption{The ``Summary" tab for the \code{commodity} data frame. On clicking the ``Visualize" button, the function slices the data frame according to inputs in the drop down menus to calculate summary statistics for the specified data subset.
 }
 \end{figure}
 
@@ -192,7 +253,7 @@ Documentation of summary statistics:
 
 \begin{itemize}
 \item{Start and End date : The backtest period.}
-\item{Allocated Capital : The amount of capital allocated to the portfolio. We use this number to calculate return on allocated capital. If the user does not specify this value, the corresponding entry will be \code{NULL} and `backtestGraphics` will use the highest GMV to calculate return on allocated capital. 
+\item{Allocated Capital : The amount of capital allocated to the portfolio. We use this number to calculate return on allocated capital. If the user does not specify this value, the corresponding entry will be \code{NULL} and `backtestGraphics` will use the highest GMV to calculate return on allocated capital.
 }
 \item{Average GMV : Average GMV of the portfolio over the backtest period. GMV is calculated by taking the absolute value of NMV of each instrument. }
 \item{Number of Instruments : The number of different instruments in the given subset of the data frame.}
@@ -202,7 +263,7 @@ daily trading is $\sqrt{252}$, while that for other trading frequency is $\sqrt{
 \item{Annualized P\&L volatility : The standard deviation of all
 annualized P\&L's.}
 \item{Annualzied Return : Annualized average return on allocated
-capital. We calculate average return rates by dividing P\&L by the allocated capital amount.  The average return rates are then annualized by multiplying them with the annualization factor. 
+capital. We calculate average return rates by dividing P\&L by the allocated capital amount.  The average return rates are then annualized by multiplying them with the annualization factor.
 }
 \item{Sharpe Ratio : A measure of risk-adjusted return. We calculate this by dividing the mean P\&L by the standard deviation of P\&L. We assume that $\text{risk-free rate} = 0$.}
 \item{Best Month and Worst Month : The month with the highest P\&L, and
@@ -210,22 +271,22 @@ the month with the lowest P\&L}
 \end{itemize}
 
 \subsubsection{The ``Detail" Tab}
-The ``Detail" tab is also present in the left-panel of the \code{Shiny} interface. It provides information about the best and worst performers, as well as the biggest drawdowns. Figure 4 displays a screenshot of the ``Detail" tab for our \code{commodity} data frame, along with corresponding documentation.  
+The ``Detail" tab is also present in the left-panel of the \code{Shiny} interface. It provides information about the best and worst performers, as well as the biggest drawdowns. Figure 4 displays a screenshot of the ``Detail" tab for our \code{commodity} data frame, along with corresponding documentation.
 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width = 2.5in, height = 3.5in]{img/detail.png}
-\caption{``Detail" tab with the \code{commodity} data frame. 
+\caption{``Detail" tab with the \code{commodity} data frame.
 }
 \end{figure}
 
 \noindent
 
-Documentation of detailed statistics: 
+Documentation of detailed statistics:
 
 \begin{itemize}
-\item{Top three drawdowns : The three biggest declines in P\&L from peak to trough. The table contains the start and end dates of the drawdowns, along with the actual value of the drawdowns. 
+\item{Top three drawdowns : The three biggest declines in P\&L from peak to trough. The table contains the start and end dates of the drawdowns, along with the actual value of the drawdowns.
 }
 \item{Best and worst three performers : The three best performers are the instruments with the highest three cumulative P\&L's. Similarly, the three worst performers are the instruments with the lowest three cumulative P\&L's. (Note: even if the user is looking at a subset of individual instruments, we will display information about the best and worst performers across all instruments. However, if the user is looking at data from a specific sector, we will display information about the best and worst performers in the specified sector).
 }
@@ -233,7 +294,7 @@ Documentation of detailed statistics:
 
 \subsection{Plots}
 
-The right-panel of our \code{Shiny} interface provides interactive plots for cumulative and point-in-time P\&L, NMV, GMV and number of contracts. 
+The right-panel of our \code{Shiny} interface provides interactive plots for cumulative and point-in-time P\&L, NMV, GMV and number of contracts.
 
 \noindent
 Figure 5 provides a screenshot of the plots.
@@ -246,9 +307,15 @@ Figure 5 provides a screenshot of the plots.
 \end{figure}
 
 \noindent
-We have made the plots interactive using the \pkg{dygraphs} package [\cite{dygraphs}]. The user can zoom in to a specific time periods in a plot by dragging the corresponding region with the mouse, or changing the time slider bar, which is located below the plots. To go back to the original time scale, the user can merely double click on the respective plot. Additionally, by hovering the mouse over the plot, the user can get specific values of the response variable of the plot, on the specific date. The color of the plots is based on the sign of the point-in-time P\&L. Green bars represent profits, while the red bars represent losses. 
+We have made the plots interactive using the \pkg{dygraphs} package [\cite{dygraphs}]. The user can zoom in to a specific time periods in a plot by dragging the corresponding region with the mouse, or changing the time slider bar, which is located below the plots. To go back to the original time scale, the user can merely double click on the respective plot. Additionally, by hovering the mouse over the plot, the user can get specific values of the response variable of the plot, on the specific date. The color of the plots is based on the sign of the point-in-time P\&L. Green bars represent profits, while the red bars represent losses.
 
-\section{Conclusion}
+
+
+
+
+%% -- Summary/conclusions/discussion -------------------------------------------
+
+\section{Conclusion} \label{sec:conclusion}
 
 The \pkg{backtestGraphics} package provides a simple \code{Shiny} interface to visualize backtest results. Inside the package, we have provided three sample data frames. The user can use the code provided in this document to test the package with these data frames. 
 
@@ -263,53 +330,26 @@ These are powerful tools to uncover trends and anomalies in the data. By decompo
 \noindent
 Going forward, the \pkg{backtestGraphics} package can easily be customized to suit the needs of a specific user. Such customization may include, among others, adding new response variables to plots, redesigning plots, or introducing additional summary statistics. We invite users to take advantage of this, and redesign the \pkg{backtestGraphics} interface according to their preferences. 
 
-\pagebreak
 
 
-\section{Authors}
-
-\address{Yanrong Song\\
-Financial Engineering\\
-Columbia University \\
-New York, NY, USA\\}
-\email{yrsong129@gmail.com}
-
-\address{Zijie Zhu\\
-Computer Science and Economics \\
-Williams College\\
-Williamstown, MA, USA\\}
-\email{zijie.miller.zhu@gmail.com}
-
-\address{David Kane\\
-Haravard University \\
-IQSS\\
-1737 Cambridge Street\\
-CGIS Knafel Building, Room 350\\
-Cambridge, MA, USA\\}
-\email{dave.kane@gmail.com}
-
-
-\address{Ziqi Lu\\
-Economics and Mathematics\\
-Williams College \\
-Williamstown, MA, USA\\}
-\email{ziqi.lu@williams.edu}
-
-\address{Karan Tibrewal\\
-Mathematics and Computer Science \\
-Williams College\\
-Williamstown, MA, USA\\}
-\email{karan.tibrewal@williams.edu}
-
-
-\address{Fan Zhang\\
-Economics and Statistics \\
-Williams College\\
-Williamstown, MA, USA\\}
-\email{fan.zhang@williams.edu}
-
+%% -- Bibliography -------------------------------------------------------------
+%% - References need to be provided in a .bib BibTeX database.
+%% - All references should be made with \cite, \citet, \citep, \citealp etc.
+%%   (and never hard-coded). See the FAQ for details.
+%% - JSS-specific markup (\proglang, \pkg, \code) should be used in the .bib.
+%% - Titles in the .bib should be in title case.
+%% - DOIs should be included where available.
 
 \bibliography{backtestGraphics}
 
-\end{article}
+
+%% -- Appendix (if any) --------------------------------------------------------
+%% - After the bibliography with page break.
+%% - With proper section titles and _not_ just "Appendix".
+
+
+
+%% -----------------------------------------------------------------------------
+
+
 \end{document}

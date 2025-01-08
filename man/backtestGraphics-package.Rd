@@ -41,3 +41,16 @@ In order to use the user's own data frame, sometimes the user might need to
 specify the column names of her data frame and pass them into the function.
 Type \code{?backtestGraphics} for more details.
 }
+\author{
+\strong{Maintainer}: Yanrong Song \email{yrsong129@gmail.com}
+
+Authors:
+\itemize{
+  \item Zijie Zhu \email{zijie.miller.zhu@gmail.com}
+  \item David Kane \email{dave.kane@gmail.com}
+  \item Ziqi Lu \email{ziqi.lu@williams.edu}
+  \item Karan Tibrewal \email{karan.tibrewal@williams.edu}
+  \item Fan Zhang \email{fan.zhang@williams.edu}
+}
+
+}

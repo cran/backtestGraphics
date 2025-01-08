@@ -1,5 +1,3 @@
-![](bg1.png)
-
 Authors
 --------------------------------------------------------
 
@@ -9,7 +7,7 @@ Zijie Zhu, zijie.miller.zhu at gmail.com
 
 David Kane, dave.kane at gmail.com
 
-Ziqi Lu, ziqi.lu at williams.edu
+Ziqi Lu, ziqilu at g.harvard.edu
 
 Karan Tibrewal, karan.tibrewal at williams.edu
 
